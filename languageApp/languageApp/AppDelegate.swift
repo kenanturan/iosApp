@@ -1,7 +1,4 @@
-if let tapGesture = self.outsideTapGesture {
-    self.view.removeGestureRecognizer(tapGesture)
-    self.outsideTapGesture = nil
-}import UIKit
+import UIKit
 import CoreData
 import UserNotifications
 

@@ -1,0 +1,123 @@
+// Genel Navigasyon ve Butonlar
+"tab_videos" = "Videolar";
+"tab_words" = "Kelimeler";
+"tab_goals" = "Hedefler";
+"show_all" = "Hepsini Göster";
+"videos" = "Videolar";
+"words" = "Kelimeler";
+"goals" = "Hedefler";
+"hide_watched" = "İzlenenleri Gizle";
+"hide_completed" = "Tamamlananları Gizle";
+"done" = "Tamam";
+"cancel" = "İptal";
+"add_goal" = "Hedefi Ekle";
+"delete_goal" = "Hedefi Sil";
+"delete_goal_confirm" = "Bu hedefi silmek istediğinize emin misiniz?";
+"confirm_delete" = "Evet, Sil";
+
+// Hedefler ve Takvim
+"calendar" = "Takvim";
+"daily_stats" = "Günlük İstatistikler";
+"select_date" = "Tarih Seç";
+"video_watching" = "Video İzleme";
+"word_memorization" = "Kelime Ezberleme";
+"deadline" = "Son tarih: %@";
+"goal" = "Hedef: %d";
+"progress" = "İlerleme: %d%%";
+"watched" = "İzlenen: %d";
+"memorized" = "Ezberlenen: %d";
+"remaining" = "Kalan: %d";
+"remaining_count" = "Kalan: %d / %d";
+"no_goal_added" = "Henüz hedef eklenmedi.";
+"all_goals_completed" = "Tüm hedefler tamamlandı!";
+"motivation_message" = "Başarıya giden yol hedefler belirlemekle başlar!";
+"see_other_goals" = "Diğer hedefleri görmek için 'Hepsini Göster' butonuna dokunabilirsiniz.";
+"daily_stats" = "Günlük İstatistikler";
+"create_new_goal" = "Yeni Hedef Oluştur";
+"track_progress" = "Hedefler belirleyerek ilerlemenizi takip edin";
+"goal_type" = "Hedef Türü";
+"video_watching" = "Video İzleme";
+"word_memorization" = "Kelime Ezberleme";
+"goal_count" = "Hedef Sayısı";
+"goal_period" = "Hedef Süresi";
+"daily" = "Günlük";
+"weekly" = "Haftalık";
+"monthly" = "Aylık";
+"deadline" = "Son tarih: %@";
+"goal" = "Hedef: %d";
+"progress" = "İlerleme: %%d";
+"watched" = "İzlenen: %d";
+"memorized" = "Ezberlenen: %d";
+"remaining" = "Kalan: %d";
+"video_goal" = "%d Video İzleme Hedefi";
+"word_goal" = "%d Kelime Ezberleme Hedefi";
+"congrats_video_goal" = "Tebrikler! %d Video İzleme Hedefine Ulaştın! 🎉";
+"congrats_word_goal" = "Tebrikler! %d Kelime Ezberleme Hedefine Ulaştın! 🎉";
+"goal_reached" = "Hedefe Ulaştın!";
+"warning" = "Uyarı";
+"error" = "Hata";
+"completion_title" = "Tebrikler! 🎉";
+"completion_message" = "Tüm kelimeleri ezberlediniz!";
+
+// Bildirim Başlıkları
+"morning_notification_title" = "Günaydın! ☀️";
+"noon_notification_title" = "Öğle Molası 🕐";
+"evening_notification_title" = "İyi Akşamlar! 🌙";
+"motivation_time" = "Motivasyon Zamanı! 💪";
+"thanks" = "Teşekkürler!";
+"default_motivation" = "Dil öğrenmeye devam et! Süreklilik başarıyı getirir.";
+
+// Sabah Motivasyon Mesajları
+"morning_motivation_1" = "Güne dil öğrenerek başlamak harika bir adım! Bugün üç yeni kelime öğrenmeyi deneyelim.";
+"morning_motivation_2" = "Günaydın! Dil öğrenmeye her gün biraz zaman ayırmak, büyük gelişmelere yol açar.";
+"morning_motivation_3" = "Sabah rutinine 10 dakika dil çalışması eklemek beynini aktive eder!";
+"morning_motivation_4" = "Yeni bir güne başlarken dil öğrenimini öncelik yap. Az ve düzenli çalışmak sırrı!";
+"morning_motivation_5" = "Günün enerjisi ile dil öğrenme! Bugün 5 dakika bile fark yaratır.";
+
+// Öğle Motivasyon Mesajları
+"noon_motivation_1" = "Öğle molası? Hızlıca birkaç kelime çalışmaya ne dersin?";
+"noon_motivation_2" = "Günün ortasında beyin molanı dil öğrenmeye ayır! 5 dakika bile önemli.";
+"noon_motivation_3" = "Bugün ne kadar ilerleme kaydettin? Hızlıca birkaç kelime tekrar et!";
+"noon_motivation_4" = "Öğle molası verimlilik zamanı! Birkaç kelime öğrenmek günün geri kalanına enerji katar.";
+"noon_motivation_5" = "Dilini her gün biraz pratik yapmak, dünden daha iyi olmanı sağlar.";
+
+// Akşam Motivasyon Mesajları
+"evening_motivation_1" = "Günü dil öğrenerek bitirmek, yarına daha hazır başlamanı sağlar!";
+"evening_motivation_2" = "Yarın sabaha kadar beynin bu bilgileri pekiştirecek. Hadi birkaç kelime daha çalış!";
+"evening_motivation_3" = "Uyumadan önce 10 dakika çalışmak, dil öğrenme sürecini hızlandırır.";
+"evening_motivation_4" = "Bugün öğrendiklerini pekiştir! Yatmadan önce kısa bir tekrar yapabilirsin.";
+"evening_motivation_5" = "Akşam dil öğrenmek zihnini rahatlatır ve daha iyi uyumana yardımcı olur. Birkaç dakika ayırmaya ne dersin?";
+
+// Kelime Ezberleme ve Flashcard
+"total_memorized" = "Toplam Ezberlenen";
+"total_goal" = "Toplam Hedef: %d";
+"watched_video" = "İzlenen Video: %d";
+"memorized_word" = "Ezberlenen Kelime: %d";
+"no_memorized_word" = "Henüz Ezberlenen Kelime Yok";
+"no_word_found" = "Kelime bulunamadı";
+"memorize_info" = "Kelime ezberlemek için video izlerken 'Kelime Kartları' butonuna tıklayabilir ve kelimeleri çalışabilirsin.";
+"study_words" = "Kelimeleri Çalış";
+"delete_word" = "Kelimeyi Sil";
+"delete_word_confirm" = "Bu kelimeyi silmek istediğine emin misin?";
+"delete" = "Sil";
+"word_cards" = "Kelime Kartları";
+"word_cards_loading_title" = "Bilgilendirme";
+"word_cards_loading_message" = "Kelime kartları şu anda yüklenemiyor. İçeriklerimiz en kısa sürede tüm dillerde kullanıma sunulacaktır. Anlayışınız için teşekkür ederiz.";
+
+// Video İzleme
+"video_title" = "%d.Video";
+"not_watched" = "İzlenmedi";
+"watched_status" = "İzlendi";
+"word_cards" = "Kelime Kartları";
+"all_videos_watched" = "Tüm videolar izlendi";
+"show_all_videos_info" = "Başka video görmek için 'Hepsini Göster' butonuna dokunun";
+
+// Dil ve Yerelleştirme
+"restart_required" = "Dilin değişmesi için uygulamayı yeniden başlatmanız gerekiyor.";
+"language_changed" = "Dil başarıyla değiştirildi.";
+
+// Diğer
+"select_date" = "Tarih Seç";
+"attention" = "Dikkat";
+"ok" = "Tamam";
+"hide_completed" = "Tamamlananları Gizle";

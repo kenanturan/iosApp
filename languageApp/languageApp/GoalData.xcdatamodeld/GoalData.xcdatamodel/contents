@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24E248" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Goal" representedClassName="Goal" syncable="YES" codeGenerationType="class">
+        <attribute name="createDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="currentCount" attributeType="Integer 32"/>
+        <attribute name="deadline" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="targetCount" attributeType="Integer 32"/>
+        <attribute name="type" attributeType="String"/>
+    </entity>
+    <entity name="RememberedWord" representedClassName="RememberedWord" syncable="YES" codeGenerationType="class">
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="translation" attributeType="String"/>
+        <attribute name="videoId" attributeType="String"/>
+        <attribute name="word" attributeType="String"/>
+    </entity>
+    <entity name="WatchedVideo" representedClassName="WatchedVideo" syncable="YES" codeGenerationType="class">
+        <attribute name="videoId" attributeType="String"/>
+        <attribute name="watchedDate" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+</model>

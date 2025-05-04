@@ -1,0 +1,112 @@
+"tab_videos" = "Videos";
+"tab_words" = "Words";
+"tab_goals" = "Goals";
+"show_all" = "Show All";
+"hide_watched" = "Hide Watched";
+"hide_completed" = "Hide Completed";
+"done" = "Done";
+"cancel" = "Cancel";
+"add_goal" = "Add Goal";
+"calendar" = "Calendar";
+"daily_stats" = "Daily Statistics";
+"select_date" = "Select Date";
+"video_watching" = "Video Watching";
+"word_memorization" = "Word Memorization";
+"deadline" = "Deadline: %@";
+"goal" = "Goal: %d";
+"progress" = "Progress: %d%%";
+"watched" = "Watched: %d";
+"memorized" = "Memorized: %d";
+"remaining" = "Remaining: %d";
+"no_goal_added" = "No goals added yet.";
+"all_goals_completed" = "All goals completed!";
+"motivation_message" = "The road to success starts with setting goals!";
+"see_other_goals" = "Tap 'Show All' to see other goals.";
+"daily_stats" = "Daily Statistics";
+"create_new_goal" = "Create New Goal";
+"track_progress" = "Track your progress by setting goals";
+"goal_type" = "Goal Type";
+"video_watching" = "Video Watching";
+"word_memorization" = "Word Memorization";
+"goal_count" = "Goal Count";
+"goal_period" = "Goal Period";
+"daily" = "Daily";
+"weekly" = "Weekly";
+"monthly" = "Monthly";
+"deadline" = "Deadline: %@";
+"goal" = "Goal: %d";
+"progress" = "Progress: %d%%";
+"watched" = "Watched: %d";
+"memorized" = "Memorized: %d";
+"remaining" = "Remaining: %d";
+"video_goal" = "%d Video Watching Goal";
+"word_goal" = "%d Word Memorization Goal";
+"congrats_video_goal" = "Congratulations! You reached the goal of watching %d videos! 🎉";
+"congrats_word_goal" = "Congratulations! You reached the goal of memorizing %d words! 🎉";
+"goal_reached" = "Goal Reached!";
+"warning" = "Warning";
+"total_memorized" = "Total Memorized: %d";
+"total_goal" = "Total Goal: %d";
+"watched_video" = "Watched Video: %d";
+"memorized_word" = "Memorized Word: %d";
+"no_memorized_word" = "No memorized words yet";
+"memorize_info" = "To memorize words, click the 'Word Cards' button while watching a video and study the words.";
+"study_words" = "Study Words";
+"delete_word" = "Delete Word";
+"delete_word_confirm" = "Are you sure you want to delete this word?";
+"delete" = "Delete";
+"video_title" = "%d.Video";
+"not_watched" = "Not Watched";
+"watched_status" = "Watched";
+"word_cards" = "Word Cards";
+"all_videos_watched" = "All videos watched";
+"show_all_videos_info" = "Tap 'Show All' to see more videos";
+"select_date" = "Select Date";
+"attention" = "Attention";
+"restart_required" = "You need to restart the app to change the language.";
+"language_changed" = "Language successfully changed.";
+"ok" = "OK";
+"remaining_count" = "Remaining: %d / %d";
+"no_word_found" = "No word found";
+"error" = "Error";
+"completion_title" = "Congratulations! 🎉";
+"completion_message" = "You've memorized all the words!";
+"delete_goal" = "Delete Goal";
+"delete_goal_confirm" = "Are you sure you want to delete this goal?";
+"confirm_delete" = "Yes, Delete";
+
+// Word Cards
+"word_cards" = "Word Cards";
+"remaining_count" = "Remaining: %d / %d";
+"no_word_found" = "No word found";
+"word_cards_loading_title" = "Information";
+"word_cards_loading_message" = "Word cards cannot be loaded at the moment. Our content will be available in all languages soon. Thank you for your understanding.";
+
+// Notification Titles
+"morning_notification_title" = "Good Morning! ☀️";
+"noon_notification_title" = "Lunch Break 🕐";
+"evening_notification_title" = "Good Evening! 🌙";
+"motivation_time" = "Motivation Time! 💪";
+"thanks" = "Thank You!";
+"default_motivation" = "Keep learning languages! Consistency brings success.";
+
+// Morning Motivation Messages
+"morning_motivation_1" = "Starting the day by learning a language is a great step! Let's try to learn three new words today.";
+"morning_motivation_2" = "Good morning! Spending a little time learning a language every day leads to great improvements.";
+"morning_motivation_3" = "Adding 10 minutes of language study to your morning routine activates your brain!";
+"morning_motivation_4" = "Make language learning a priority as you start a new day. The secret is little and regular practice!";
+"morning_motivation_5" = "Learn a language with the energy of the day! Even 5 minutes makes a difference today.";
+
+// Noon Motivation Messages
+"noon_motivation_1" = "Lunch break? How about studying a few words quickly?";
+"noon_motivation_2" = "Dedicate your brain break in the middle of the day to language learning! Even 5 minutes is important.";
+"noon_motivation_3" = "How much progress have you made today? Quickly review a few words!";
+"noon_motivation_4" = "Lunch break is productivity time! Learning a few words adds energy to the rest of your day.";
+"noon_motivation_5" = "Practicing your language a little every day makes you better than yesterday.";
+
+// Evening Motivation Messages
+"evening_motivation_1" = "Ending the day by learning a language helps you start tomorrow more prepared!";
+"evening_motivation_2" = "Your brain will consolidate this information until tomorrow morning. Let's study a few more words!";
+"evening_motivation_3" = "Studying for 10 minutes before sleep accelerates the language learning process.";
+"evening_motivation_4" = "Reinforce what you've learned today! You can do a quick review before going to bed.";
+"evening_motivation_5" = "Learning a language in the evening relaxes your mind and helps you sleep better. How about sparing a few minutes?";

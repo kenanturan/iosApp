@@ -43,9 +43,10 @@
 "daily" = "Günlük";
 "weekly" = "Haftalık";
 "monthly" = "Aylık";
+"goal_plan" = "Günlük, haftalık veya aylık olarak ilerlemenizi takip edin";
 "deadline" = "Son tarih: %@";
 "goal" = "Hedef: %d";
-"progress" = "İlerleme: %%d";
+"progress" = "İlerleme: %d%%";
 "watched" = "İzlenen: %d";
 "memorized" = "Ezberlenen: %d";
 "remaining" = "Kalan: %d";

@@ -94,16 +94,9 @@ struct GoalRow: View {
             // Bottom Details
             HStack(spacing: 16) {
                 if (goal.type ?? "") == "video" {
-                    let watchedCount = watchedVideos.filter { video in
-                        if let start = goal.createDate, let end = goal.deadline, let date = video.watchedDate {
-                            return date >= start && date <= end
-                        } else if let start = goal.createDate, let date = video.watchedDate {
-                            return date >= start
-                        } else if let end = goal.deadline, let date = video.watchedDate {
-                            return date <= end
-                        }
-                        return true
-                    }.count
+                    // DÜZELTME: Tutarlılık için goal.currentCount değerini kullan
+                    // Bu değer GoalCoreDataManager tarafından doğru hesaplanan ve ilerleme çubuğunda da kullanılan değer
+                    let watchedCount = Int(goal.currentCount)
                     HStack(spacing: 4) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundColor(.green)
@@ -112,10 +105,12 @@ struct GoalRow: View {
                     HStack(spacing: 4) {
                         Image(systemName: "circle")
                             .foregroundColor(.orange)
-                        Text(String.localizedStringWithFormat(NSLocalizedString("remaining", comment: "Remaining"), max(0, goal.targetCount - Int32(watchedCount))))
+                        Text(String.localizedStringWithFormat(NSLocalizedString("remaining", comment: "Remaining"), max(0, Int(goal.targetCount) - watchedCount)))
                     }
                 } else if (goal.type ?? "") == "kelime" {
-                    let rememberedCount = rememberedWords.count
+                    // DÜZELTME: Tutarlılık için goal.currentCount değerini kullan
+                    // Bu değer GoalCoreDataManager tarafından doğru hesaplanan ve ilerleme çubuğunda da kullanılan değer
+                    let rememberedCount = Int(goal.currentCount)
                     HStack(spacing: 4) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundColor(.green)
@@ -124,7 +119,7 @@ struct GoalRow: View {
                     HStack(spacing: 4) {
                         Image(systemName: "circle")
                             .foregroundColor(.orange)
-                        Text(String.localizedStringWithFormat(NSLocalizedString("remaining", comment: "Remaining"), max(0, goal.targetCount - Int32(rememberedCount))))
+                        Text(String.localizedStringWithFormat(NSLocalizedString("remaining", comment: "Remaining"), max(0, Int(goal.targetCount) - rememberedCount)))
                     }
                 }
             }
@@ -153,12 +148,16 @@ struct GoalRow: View {
         
         isCheckingCompletion = true
         
-        // If the goal is completed and hasn't been celebrated before
-        if progress >= 1.0 && !GoalCelebrationTracker.shared.hasGoalBeenCelebrated(goal) {
+        // Hedef tamamlandı mı kontrol et - ama çok daha katı kurallarla
+        // 1. Hedef sayısı en az 1 olmalı 
+        // 2. Mevcut ilerleme sayısı en az 1 olmalı (yani en az bir eylem)
+        // 3. İlerleme 1.0 veya üzerinde olmalı (hedefe ulaşılmalı)
+        // 4. Kutlama daha önce yapılmamış olmalı
+        if goal.targetCount > 0 && goal.currentCount > 0 && progress >= 1.0 && !GoalCelebrationTracker.shared.hasGoalBeenCelebrated(goal) {
             // Determine message based on goal type
             let message = (goal.type ?? "") == "video" ?
-                NSLocalizedString("congrats_video_goal", comment: "Congratulations video goal").replacingOccurrences(of: "{count}", with: "\(goal.targetCount)") :
-                NSLocalizedString("congrats_word_goal", comment: "Congratulations word goal").replacingOccurrences(of: "{count}", with: "\(goal.targetCount)")
+                String.localizedStringWithFormat(NSLocalizedString("congrats_video_goal", comment: "Congratulations video goal"), goal.targetCount) :
+                String.localizedStringWithFormat(NSLocalizedString("congrats_word_goal", comment: "Congratulations word goal"), goal.targetCount)
             
             // Mark the goal as celebrated
             GoalCelebrationTracker.shared.markGoalAsCelebrated(goal)
@@ -176,22 +175,13 @@ struct GoalRow: View {
     
     // Calculate progress
     private var currentCount: Int32 {
-        if (goal.type ?? "") == "video" {
-            let watchedCount = watchedVideos.filter { video in
-                if let start = goal.createDate, let end = goal.deadline, let date = video.watchedDate {
-                    return date >= start && date <= end
-                } else if let start = goal.createDate, let date = video.watchedDate {
-                    return date >= start
-                } else if let end = goal.deadline, let date = video.watchedDate {
-                    return date <= end
-                }
-                return true
-            }.count
-            return Int32(watchedCount)
-        } else if (goal.type ?? "") == "kelime" {
-            return Int32(rememberedWords.count)
-        }
-        return 0
+        // Core Data'dan gelen mevcut sayıyı kullan
+        // Bu değer doğrudan GoalCoreDataManager tarafından, tam tarih ve saat kontrolü yapılarak hesaplanıyor
+        return goal.currentCount
+        
+        // Aşağıdaki kodlar ESKI KODLARDIR ve sorunun kaynağıdır
+        // Bu hesaplama burada yapılmamalı, GoalCoreDataManager ve WatchedVideosManager sınıflarında yapılmalıdır
+        // Oradaki hesaplamalar doğru tarih ve saat kontrolü yapıyor, buradakiler yanlış
     }
     
     private var progress: Double {

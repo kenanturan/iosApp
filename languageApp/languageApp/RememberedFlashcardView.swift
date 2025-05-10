@@ -15,15 +15,48 @@ struct RememberedFlashcardView: View {
                 .foregroundColor(.secondary)
             Spacer()
             ZStack {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: Color(.black).opacity(0.15), radius: 8, x: 0, y: 4)
+                // Gelişmiş kart arka planı
+                ZStack {
+                    // Arka plan gradyan
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color(.systemBackground),
+                            Color(.systemBackground).opacity(0.8)
+                        ]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .shadow(color: Color(.label).opacity(0.25), radius: 12, x: 0, y: 4)
+                    
+                    // İç çerçeve
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .stroke(LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color(.systemGray4),
+                                Color(.systemGray3)
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ), lineWidth: 1.5)
+                    
+                    // Hafif parlama efekti
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color.white.opacity(0.1),
+                                Color.clear
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .center
+                        ))
+                }
                 // Sola çekince kırmızı çarpı
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(Color(.systemBackground))
                         .frame(width: 80, height: 80)
-                        .shadow(radius: 10)
+                        .shadow(color: Color(.systemRed).opacity(0.3), radius: 10, x: 0, y: 0)
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 70))
                         .foregroundColor(.red)
@@ -33,9 +66,9 @@ struct RememberedFlashcardView: View {
                 // Sağa çekince yeşil tik
                 ZStack {
                     Circle()
-                        .fill(Color.white)
+                        .fill(Color(.systemBackground))
                         .frame(width: 80, height: 80)
-                        .shadow(radius: 10)
+                        .shadow(color: Color(.systemGreen).opacity(0.3), radius: 10, x: 0, y: 0)
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 70))
                         .foregroundColor(.green)
@@ -43,11 +76,13 @@ struct RememberedFlashcardView: View {
                 .opacity(dragOffset.width > 20 ? min(Double(dragOffset.width / 30), 1.0) : 0)
                 .offset(x: 80, y: 0)
                 Text(showTranslation ? (words[currentIndex].translation ?? "") : (words[currentIndex].word ?? ""))
-                    .font(.largeTitle)
-                    .bold()
+                    .font(.system(size: 32, weight: .bold, design: .rounded))
                     .foregroundColor(.primary)
                     .multilineTextAlignment(.center)
                     .padding()
+                    .shadow(color: Color(.label).opacity(0.15), radius: 2, x: 0, y: 1)
+                    .scaleEffect(dragOffset == .zero ? 1.0 : 0.95) // Çekerken küçült
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: dragOffset)
             }
             .frame(height: 200)
             .padding(.horizontal, 20)

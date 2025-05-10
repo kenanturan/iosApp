@@ -72,31 +72,32 @@ struct GoalsView: View {
     
     var body: some View {
         NavigationView {
-            ZStack(alignment: .bottom) {
-                // Ana içerik alanı
-                VStack(spacing: 0) {
-                    if viewModel.goals.isEmpty || (viewModel.filteredGoals.isEmpty && viewModel.hideCompletedGoals) {
-                        // Boş durum görünümü
-                        VStack(spacing: 20) {
-                            Image(systemName: viewModel.goals.isEmpty ? "target" : "checkmark.circle")
-                                .font(.system(size: 70))
-                                .foregroundColor(.gray.opacity(0.3))
-                            Text(viewModel.goals.isEmpty ? 
-                                 NSLocalizedString("no_goal_added", comment: "No goals added yet") : 
-                                 NSLocalizedString("all_goals_completed", comment: "All goals completed"))
-                                .font(.headline)
-                                .foregroundColor(.secondary)
-                            Text(viewModel.goals.isEmpty ? 
-                                 NSLocalizedString("motivation_message", comment: "Motivation message") : 
-                                 NSLocalizedString("see_other_goals", comment: "See other goals"))
-                                .font(.subheadline)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.secondary.opacity(0.8))
-                                .padding(.horizontal, 40)
-                        }
-                        .padding(.vertical, 50)
-                    } else {
-                        // Hedef listesi
+            // Kaydırma sorununu çözmek için ZStack ve VStack yapısını yeniden düzenliyorum
+            ZStack {
+                // Ana içerik
+                if viewModel.goals.isEmpty || (viewModel.filteredGoals.isEmpty && viewModel.hideCompletedGoals) {
+                    // Boş durum görünümü
+                    VStack(spacing: 20) {
+                        Image(systemName: viewModel.goals.isEmpty ? "target" : "checkmark.circle")
+                            .font(.system(size: 70))
+                            .foregroundColor(.gray.opacity(0.3))
+                        Text(viewModel.goals.isEmpty ? 
+                             NSLocalizedString("no_goal_added", comment: "No goals added yet") : 
+                             NSLocalizedString("all_goals_completed", comment: "All goals completed"))
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                        Text(viewModel.goals.isEmpty ? 
+                             NSLocalizedString("motivation_message", comment: "Motivation message") : 
+                             NSLocalizedString("see_other_goals", comment: "See other goals"))
+                            .font(.subheadline)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.secondary.opacity(0.8))
+                            .padding(.horizontal, 40)
+                    }
+                    .padding(.vertical, 50)
+                } else {
+                    VStack {
+                        // Hedefe uygun ScrollView - üst kısımda geniş bir alan
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 16) {
                                 ForEach(viewModel.filteredGoals, id: \.objectID) { goal in
@@ -105,88 +106,82 @@ struct GoalsView: View {
                                         viewModel.fetchGoals()
                                     })
                                 }
-                                
-                                // Tab bar ve butonlar için alt boşluk
-                                Spacer(minLength: 80)
+                                // Sayfayı tam olarak kaydırabilmek için ekstra boşluk
+                                Spacer(minLength: 150)
                             }
                             .padding(.vertical, 16)
-                            .padding(.horizontal, 16)
                         }
-                    }
-                    
-                    Spacer() // Ana içerik ile günlük istatistikler butonu arasında
-                    
-                    // Günlük istatistikler butonu - tab bar'ın hemen üstünde
-                    Button(action: { showCalendar.toggle() }) {
-                        HStack {
-                            Image(systemName: "calendar")
-                            Text(NSLocalizedString("daily_stats", comment: "Daily statistics"))
-                                .font(.system(size: 15, weight: .medium))
-                            Spacer()
-                            Image(systemName: showCalendar ? "chevron.up" : "chevron.down")
-                                .font(.caption)
-                        }
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 16)
-                        .background(Color(.secondarySystemBackground))
-                        .cornerRadius(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.blue.opacity(0.3), lineWidth: 1)
-                        )
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 6)
-                }
-                
-                // Takvim görünümü
-                if showCalendar {
-                    VStack {
-                        Spacer()
-                        VStack(alignment: .leading) {
-                            CalendarView(onDateSelected: { date in
-                                selectedCalendarDate = date
-                                showDaySummary = true
-                            }, allGoals: viewModel.goals)
-                                .cornerRadius(16)
-                                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
-                        }
-                        .padding()
                         .background(Color(.systemBackground))
-                        .cornerRadius(16)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 70) // Tab bar için alan bırak
+                        
+                        // Takvim butonu ve diğer içerikler alt kısımda
+                        Spacer(minLength: 0)
+                        
+                        Button(action: {
+                            showCalendar.toggle()
+                }) {
+                    HStack {
+                        Image(systemName: "calendar")
+                        Text(NSLocalizedString("daily_stats", comment: "Daily statistics"))
+                            .font(.system(size: 15, weight: .medium))
+                        Spacer()
+                        Image(systemName: showCalendar ? "chevron.up" : "chevron.down")
+                            .font(.caption)
                     }
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 16)
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.blue.opacity(0.3), lineWidth: 1)
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.horizontal)
+                .padding(.bottom, 6)
+                
+                if showCalendar {
+                    VStack(alignment: .leading) {
+                        // Tüm hedefleri göndererek, tamamlanan günlerde tik işareti gösterilmesini sağla
+                        CalendarView(onDateSelected: { date in
+                            selectedCalendarDate = date
+                            showDaySummary = true
+                        }, allGoals: viewModel.goals)
+                        .cornerRadius(16)
+                        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 5)
+                        .padding(.top, 8)
+                        .padding(.bottom, 16)
+                        .padding(.horizontal, 4)
+                    }
+                    .padding()
+                    .background(Color(.systemBackground))
+                    .cornerRadius(16)
+                }
                 }
                 
-                // Artı butonu - her zaman göster, takvim açıkken konumunu ayarla
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer() // Sağa yaslamak için
-                        Button(action: { showAddGoal = true }) {
-                            ZStack {
-                                Circle()
-                                    .fill(
-                                        LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]),
-                                                  startPoint: .topLeading,
-                                                  endPoint: .bottomTrailing)
-                                    )
-                                    .frame(width: 56, height: 56)
-                                    .shadow(color: Color.blue.opacity(0.4), radius: 8, x: 0, y: 4)
-                                
-                                Image(systemName: "plus")
-                                    .font(.system(size: 24, weight: .bold))
-                                    .foregroundColor(.white)
-                            }
-                        }
+                // Modern FAB (Floating Action Button) tasarımı
+                Button(action: { showAddGoal = true }) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]),
+                                              startPoint: .topLeading,
+                                              endPoint: .bottomTrailing)
+                            )
+                            .frame(width: 60, height: 60)
+                            .shadow(color: Color.blue.opacity(0.4), radius: 8, x: 0, y: 4)
+                        
+                        Image(systemName: "plus")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white)
                     }
-                    .padding(.trailing, 24)
-                    // Takvim açıkken daha yukarıda konumlandır, kapalıyken normal konumda göster
-                    .padding(.bottom, showCalendar ? 400 : 80)
-                    .animation(.easeInOut(duration: 0.3), value: showCalendar) // Konum değişimini animasyonlu yap
                 }
+                .padding(.trailing, 20)
+                .padding(.bottom, showCalendar ? 330 : 20) // Takvim açıksa daha yukarıda olacak
+                // Subtle spring animation
+                .scaleEffect(showAddGoal ? 0.9 : 1.0)
+                .animation(.spring(), value: showAddGoal)
+                .animation(.spring(), value: showCalendar) // Animasyonlu geçiş için
             }
             .navigationBarTitle("", displayMode: .inline)
             // Toolbar removed
@@ -543,10 +538,7 @@ struct GoalsView: View {
         default:
             deadline = today
         }
-        // Hedefe ulaşılmaması için hedefe başlanmazdan önce kullanıcı en az 1 kelime ezberlemelidir
-        // Bu yüzden hedefin mevcut ilerleme sayısını -1 olarak ayarlayıp, hedefe ulaşmak için
-        // kullanıcının en az 1 eylem yapmasını zorlayalım
-        GoalCoreDataManager.shared.addGoal(type: selectedGoalType, targetCount: targetCount, startWithZero: false, deadline: deadline)
+        GoalCoreDataManager.shared.addGoal(type: selectedGoalType, targetCount: targetCount, deadline: deadline)
         viewModel.fetchGoals()
         showAddGoal = false
         newTargetCount = ""

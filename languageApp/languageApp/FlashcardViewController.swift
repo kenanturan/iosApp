@@ -1,5 +1,72 @@
 import UIKit
 
+// Gradient arka plan için basit bir sınıf - tamamen yeniden yazdım
+class CardView: UIView {
+    private let contentView = UIView()
+    private let gradientLayer = CAGradientLayer()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        // İç view'u ekleyin
+        addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        
+        // Gradient ayarları
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        contentView.layer.insertSublayer(gradientLayer, at: 0)
+        
+        // Görünüm ayarları
+        layer.cornerRadius = 20
+        contentView.layer.cornerRadius = 20
+        contentView.clipsToBounds = true
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowRadius = 12
+        layer.shadowOpacity = 0.4
+        layer.masksToBounds = false
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.frame = contentView.bounds
+    }
+    
+    func setupForDarkMode(isDarkMode: Bool) {
+        // Gölge rengi
+        layer.shadowColor = isDarkMode ? 
+            UIColor.white.withAlphaComponent(0.4).cgColor : 
+            UIColor.black.withAlphaComponent(0.4).cgColor
+        
+        // Gradient renkleri
+        let bgColor = isDarkMode ? UIColor.darkGray : UIColor.white
+        gradientLayer.colors = [
+            bgColor.cgColor,
+            bgColor.withAlphaComponent(0.8).cgColor
+        ]
+        
+        // Kart çerçevesi
+        contentView.layer.borderWidth = 1.5
+        contentView.layer.borderColor = isDarkMode ? 
+            UIColor.lightGray.withAlphaComponent(0.3).cgColor : 
+            UIColor.gray.withAlphaComponent(0.2).cgColor
+    }
+}
+
 class FlashcardViewController: UIViewController {
     private var words: [Word] = []
     private var currentIndex = 0
@@ -20,9 +87,9 @@ class FlashcardViewController: UIViewController {
     
     private let checkmarkImageView: UIImageView = {
         let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .bold)
-        let image = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)?
-            .withTintColor(.systemGreen, renderingMode: .alwaysOriginal)
+        let image = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)
         let imageView = UIImageView(image: image)
+        imageView.tintColor = .systemGreen
         imageView.alpha = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -30,50 +97,70 @@ class FlashcardViewController: UIViewController {
     
     private let crossImageView: UIImageView = {
         let config = UIImage.SymbolConfiguration(pointSize: 100, weight: .bold)
-        let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: config)?
-            .withTintColor(.systemRed, renderingMode: .alwaysOriginal)
+        let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: config)
         let imageView = UIImageView(image: image)
+        imageView.tintColor = .systemRed
         imageView.alpha = 0
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let cardView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemBackground
-        view.layer.cornerRadius = 20
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 6
-        view.layer.shadowOpacity = 0.1
-        return view
+    private let cardView: CardView = {
+        let card = CardView(frame: .zero)
+        
+        // Karanlık/açık moda göre ayarla
+        if #available(iOS 13.0, *) {
+            let isDarkMode = UITraitCollection.current.userInterfaceStyle == .dark
+            card.setupForDarkMode(isDarkMode: isDarkMode)
+        } else {
+            card.setupForDarkMode(isDarkMode: false)
+        }
+        
+        return card
     }()
     
     private let wordLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.textColor = .label
         label.numberOfLines = 0
+        label.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        label.layer.shadowOffset = CGSize(width: 0, height: 1)
+        label.layer.shadowRadius = 2
+        label.layer.shadowOpacity = 0.3
         return label
     }()
     
     private let nextButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Sonraki", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = .systemBlue
+        button.setTitle(NSLocalizedString("forgot", comment: "Forgot"), for: .normal)
+        button.backgroundColor = .systemRed
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 10
+        
+        // Button gölge efekti ekle (karanlık modda da belirgin olması için)
+        button.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.3
+        
         return button
     }()
     
     private let previousButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Önceki", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = .systemGray
+        button.setTitle(NSLocalizedString("remember", comment: "Remember"), for: .normal)
+        button.backgroundColor = .systemGreen
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 10
+        
+        // Button gölge efekti ekle (karanlık modda da belirgin olması için)
+        button.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.3
+        
         return button
     }()
     
@@ -95,6 +182,58 @@ class FlashcardViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         fetchWords()
+    }
+    
+    // Kelime kartı görüntüsünden çıkarken hedefleri güncelle ve tebrik mesajını göster
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        print("[FlashcardVC] Görünümden çıkılıyor, hedefler güncelleniyor...")
+        
+        // 1. Tüm hedeflerin ilerlemesini güncelle
+        GoalCoreDataManager.shared.updateAllGoalsProgress()
+        
+        // 2. Tamamlanan hedefleri bul ve kutlama yap
+        let completedGoals = GoalCoreDataManager.shared.fetchCompletedGoals()
+        
+        // Eğer tamamlanmış ve kutlanmamış hedefler varsa
+        for goal in completedGoals {
+            // Hedefin kutlanmadığından emin ol
+            if !GoalCelebrationTracker.shared.hasGoalBeenCelebrated(goal) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    // Hedef türüne göre mesaj belirle
+                    let message = (goal.type ?? "") == "video" ?
+                        String.localizedStringWithFormat(NSLocalizedString("congrats_video_goal", comment: "Congratulations video goal"), goal.targetCount) :
+                        String.localizedStringWithFormat(NSLocalizedString("congrats_word_goal", comment: "Congratulations word goal"), goal.targetCount)
+                    
+                    // Hedefi kutlanmış olarak işaretle
+                    GoalCelebrationTracker.shared.markGoalAsCelebrated(goal)
+                    
+                    // Kutlama mesajını göster
+                    CelebrationManager.shared.showCelebration(message: message)
+                }
+                
+                // Sadece ilk tamamlanan hedef için kutlama yap
+                break
+            }
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // Karanlık/açık mod değişikliğini kontrol et
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                // Karanlık mod değiştiğinde kartları güncelle
+                let isDarkMode = traitCollection.userInterfaceStyle == .dark
+                cardView.setupForDarkMode(isDarkMode: isDarkMode)
+                
+                // Yeniden çizim için layout'u güncelle
+                cardView.setNeedsLayout()
+                view.setNeedsLayout()
+            }
+        }
     }
     
     private func setupUI() {
@@ -190,9 +329,15 @@ class FlashcardViewController: UIViewController {
             }
             
             do {
-                let words = try JSONDecoder().decode(WordResponse.self, from: data)
+                let decoder = JSONDecoder()
+                let words = try decoder.decode(WordResponse.self, from: data)
                 DispatchQueue.main.async {
-                    self.words = words
+                    // Sadece bilinmeyen (unknown) veya unutulmuş (forgotten) kelimeleri göster
+                    // Bu, video izlendiğinde kelimelerin ezberlenmiş olarak işaretlenmesini önler
+                    self.words = words.filter { word in
+                        let status = WordStatusManager.shared.getStatus(for: word.english, in: self.videoId)
+                        return status != .remembered
+                    }
                     self.totalWords = words.count
                     self.updateCard()
                 }
@@ -398,7 +543,13 @@ class FlashcardViewController: UIViewController {
             let title = NSLocalizedString("word_cards_loading_title", comment: "Word cards loading title")
             let message = NSLocalizedString("word_cards_loading_message", comment: "Word cards loading message")
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: "OK button"), style: .default))
+            
+            // Tamam butonuna tıklandığında önceki sayfaya dön
+            alert.addAction(UIAlertAction(title: NSLocalizedString("ok", comment: "OK button"), style: .default) { [weak self] _ in
+                // Önceki sayfaya geri dön
+                self?.dismiss(animated: true)
+            })
+            
             self.present(alert, animated: true)
         }
     }

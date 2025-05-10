@@ -9,56 +9,24 @@ class VideoPlayerViewController: UIViewController {
     private let watchedButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
-        let image = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal)
+        let image = UIImage(systemName: "checkmark.circle.fill", withConfiguration: config)
         button.setTitle("  " + NSLocalizedString("watched_status", comment: "Watched status"), for: .normal)
         button.setImage(image, for: .normal)
-        button.tintColor = .white
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.numberOfLines = 2
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
-        button.layer.cornerRadius = 24
+        button.layer.cornerRadius = 25
         button.layer.masksToBounds = true
-        button.layer.shadowColor = UIColor.systemGreen.cgColor
-        button.layer.shadowOpacity = 0.25
-        button.layer.shadowOffset = CGSize(width: 0, height: 4)
-        button.layer.shadowRadius = 8
-        button.layoutIfNeeded()
-        let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.systemGreen.cgColor, UIColor.systemTeal.cgColor]
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
-        gradient.frame = button.bounds
-        button.layer.insertSublayer(gradient, at: 0)
         return button
     }()
     
     private let unwatchedButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
-        let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: config)?.withRenderingMode(.alwaysOriginal)
+        let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: config)
         button.setTitle("  " + NSLocalizedString("not_watched", comment: "Not watched status"), for: .normal)
         button.setImage(image, for: .normal)
-        button.tintColor = .white
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.numberOfLines = 2
-        button.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
-        button.layer.cornerRadius = 24
+        button.layer.cornerRadius = 25
         button.layer.masksToBounds = true
-        button.layer.shadowColor = UIColor.systemRed.cgColor
-        button.layer.shadowOpacity = 0.25
-        button.layer.shadowOffset = CGSize(width: 0, height: 4)
-        button.layer.shadowRadius = 8
-        button.layoutIfNeeded()
-        let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.systemRed.cgColor, UIColor.systemOrange.cgColor]
-        gradient.startPoint = CGPoint(x: 0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1, y: 0.5)
-        gradient.frame = button.bounds
-        button.layer.insertSublayer(gradient, at: 0)
         return button
     }()
     
@@ -107,12 +75,74 @@ class VideoPlayerViewController: UIViewController {
         setupActions()
         
         // Set initial button states based on watched status
+        updateButtonAppearance()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // Karanlık/açık mod değişikliğini kontrol et
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                // Butonların görünümünü güncelle
+                updateButtonAppearance()
+            }
+        }
+    }
+    
+    private func updateButtonAppearance() {
         if WatchedVideosManager.shared.isWatched(videoId) {
-            watchedButton.backgroundColor = .systemGreen
-            unwatchedButton.backgroundColor = .systemGray
+            // İzlendi durumu - Dinamik renk kullan
+            watchedButton.backgroundColor = UIColor.systemGreen
+            watchedButton.tintColor = .white
+            watchedButton.setTitleColor(.white, for: .normal)
+            watchedButton.layer.borderWidth = 2.0
+            
+            if #available(iOS 13.0, *) {
+                let borderColor = traitCollection.userInterfaceStyle == .dark ? 
+                    UIColor.lightGray : UIColor.white
+                watchedButton.layer.borderColor = borderColor.cgColor
+            } else {
+                watchedButton.layer.borderColor = UIColor.white.cgColor
+            }
+            
+            // İzlenmedi butonu pasif göster
+            if #available(iOS 13.0, *) {
+                unwatchedButton.backgroundColor = traitCollection.userInterfaceStyle == .dark ? 
+                    UIColor.darkGray : UIColor.systemGray4
+            } else {
+                unwatchedButton.backgroundColor = UIColor.systemGray4
+            }
+            
+            unwatchedButton.tintColor = UIColor.lightGray
+            unwatchedButton.setTitleColor(UIColor.lightGray, for: .normal)
+            unwatchedButton.layer.borderWidth = 0
         } else {
-            watchedButton.backgroundColor = .systemGray
-            unwatchedButton.backgroundColor = .systemRed
+            // İzlenmedi durumu - Dinamik renk kullan
+            unwatchedButton.backgroundColor = UIColor.systemRed
+            unwatchedButton.tintColor = .white
+            unwatchedButton.setTitleColor(.white, for: .normal)
+            unwatchedButton.layer.borderWidth = 2.0
+            
+            if #available(iOS 13.0, *) {
+                let borderColor = traitCollection.userInterfaceStyle == .dark ? 
+                    UIColor.lightGray : UIColor.white
+                unwatchedButton.layer.borderColor = borderColor.cgColor
+            } else {
+                unwatchedButton.layer.borderColor = UIColor.white.cgColor
+            }
+            
+            // İzlendi butonu pasif göster
+            if #available(iOS 13.0, *) {
+                watchedButton.backgroundColor = traitCollection.userInterfaceStyle == .dark ? 
+                    UIColor.darkGray : UIColor.systemGray4
+            } else {
+                watchedButton.backgroundColor = UIColor.systemGray4
+            }
+            
+            watchedButton.tintColor = UIColor.lightGray
+            watchedButton.setTitleColor(UIColor.lightGray, for: .normal)
+            watchedButton.layer.borderWidth = 0
         }
     }
     
@@ -231,16 +261,24 @@ class VideoPlayerViewController: UIViewController {
     }
     
     @objc private func watchedTapped() {
-        watchedButton.backgroundColor = .systemGreen
-        unwatchedButton.backgroundColor = .systemGray
+        // İzlendi olarak işaretle
         WatchedVideosManager.shared.markAsWatched(videoId)
+        
+        // Buton görünümlerini güncelle
+        updateButtonAppearance()
+        
+        // Bildirim gönder
         NotificationCenter.default.post(name: NSNotification.Name("VideoWatchStatusChanged"), object: nil)
     }
     
     @objc private func unwatchedTapped() {
-        watchedButton.backgroundColor = .systemGray
-        unwatchedButton.backgroundColor = .systemRed
+        // İzlenmedi olarak işaretle
         WatchedVideosManager.shared.markAsUnwatched(videoId)
+        
+        // Buton görünümlerini güncelle
+        updateButtonAppearance()
+        
+        // Bildirim gönder
         NotificationCenter.default.post(name: NSNotification.Name("VideoWatchStatusChanged"), object: nil)
     }
 }

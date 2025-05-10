@@ -7,6 +7,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Notification center için delegate atama
         UNUserNotificationCenter.current().delegate = self
         
+        // GitHub'dan yapılandırma bilgilerini çek
+        Config.fetchConfiguration { success in
+            if success {
+                print("YouTube yapılandırması başarıyla güncellendi")
+            } else {
+                print("YouTube yapılandırması güncellenemedi, varsayılan değerler kullanılacak")
+            }
+        }
+        
         // Bildirim izni iste ve bildirimleri planla
         NotificationManager.shared.requestPermission { granted in
             if granted {
